@@ -31,16 +31,44 @@ if not models:
 # --- Model Evaluation Metrics ---
 with st.expander("📊 View Model Evaluation Metrics"):
     st.markdown("""
-    These are the evaluation metrics for the models trained on the historical dataset:
-    
-    | Model | Accuracy | Precision | Recall | F1 Score |
-    | :--- | :--- | :--- | :--- | :--- |
-    | **Logistic Regression** | 82.11% | 68.62% | 59.79% | 63.90% |
-    | **Decision Tree** | 71.26% | 45.98% | 49.06% | 47.47% |
-    | **MLP (Neural Net)** | 79.21% | 63.51% | 50.40% | 56.20% |
-    
-    *Logistic Regression performed the best overall on this dataset.*
+    These metrics were computed by evaluating each saved model on the **held-out test set** (20% of the dataset, 1,409 samples):
     """)
+
+    metrics_data = {
+        "Model": ["Logistic Regression", "Decision Tree", "MLP (Neural Net)"],
+        "Accuracy":  ["81.97%", "79.99%", "78.57%"],
+        "Precision": ["68.42%", "61.88%", "61.41%"],
+        "Recall":    ["59.25%", "63.54%", "51.21%"],
+        "F1 Score":  ["63.51%", "62.70%", "55.85%"],
+    }
+    metrics_df = pd.DataFrame(metrics_data).set_index("Model")
+    st.table(metrics_df)
+
+    st.markdown("**Confusion Matrices** (rows = Actual, cols = Predicted):")
+    cm_col1, cm_col2, cm_col3 = st.columns(3)
+    with cm_col1:
+        st.markdown("**Logistic Regression**")
+        st.table(pd.DataFrame(
+            [[934, 102], [152, 221]],
+            index=["Actual: No Churn", "Actual: Churn"],
+            columns=["Pred: No Churn", "Pred: Churn"]
+        ))
+    with cm_col2:
+        st.markdown("**Decision Tree**")
+        st.table(pd.DataFrame(
+            [[890, 146], [136, 237]],
+            index=["Actual: No Churn", "Actual: Churn"],
+            columns=["Pred: No Churn", "Pred: Churn"]
+        ))
+    with cm_col3:
+        st.markdown("**MLP (Neural Net)**")
+        st.table(pd.DataFrame(
+            [[916, 120], [182, 191]],
+            index=["Actual: No Churn", "Actual: Churn"],
+            columns=["Pred: No Churn", "Pred: Churn"]
+        ))
+
+    st.info("🏆 **Logistic Regression** achieves the highest accuracy (81.97%) and F1 Score (63.51%), making it the best overall performer on this dataset. Decision Tree has the highest Recall (63.54%), useful when minimising missed churners matters most.")
 
 # --- Prediction Models & Modes ---
 st.markdown("<br>", unsafe_allow_html=True)
