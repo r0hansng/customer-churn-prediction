@@ -2,18 +2,26 @@
 
 > An AI-driven web application designed to identify at-risk customers and evaluate churn probabilities using classical Machine Learning pipelines. Built for Milestone 1 of **Project 5**.
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
+
 ---
 
 ## 📌 Project Overview
 
 This system applies machine learning techniques to historical customer behavior data to predict churn risk and identify key drivers of disengagement.
 
-- **Milestone 1:** Focuses on predictive analytics using Logistic Regression, Decision Trees, and Multi-Layer Perceptrons (MLPs). Features an interactive UI for real-time and batch predictions.
+- **Milestone 1:** Focuses on predictive analytics using Logistic Regression, Decision Trees, and MLPs. Features an interactive UI for real-time and batch predictions.
 - **Milestone 2 (Upcoming):** Extends the predictive model into an agentic AI retention strategist using LangGraph, capable of reasoning about churn and proposing retention strategies via RAG.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Live Demo
+**Access the fully deployed application here:**  
+🔗 [**Customer Churn Prediction App**](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
+
+---
+
+## 💻 Local Quick Start
 
 ### 1. Clone the Repository
 ```bash
