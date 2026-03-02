@@ -1,48 +1,87 @@
-# Customer Churn Prediction & Retention Strategy
+# 📉 Customer Churn Prediction & Retention Strategy
 
-An ML-driven web application designed to identify at-risk customers and evaluate churn probabilities using classical Machine Learning pipelines. Built as part of Milestone 1 for Project 5.
+> An AI-driven web application designed to identify at-risk customers and evaluate churn probabilities using classical Machine Learning pipelines. Built for Milestone 1 of **Project 5**.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
-![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)
-![Scikit-Learn](https://img.shields.io/badge/ml-scikit--learn-orange.svg)
-
-## Table of Contents
-- [Overview](#overview)
-- [System Architecture](#system-architecture)
-- [Core Features](#core-features)
-- [Model Architecture & Optimization](#model-architecture--optimization)
-- [Quick Start](#quick-start)
-- [Technology Stack](#technology-stack)
-- [Evaluation Criteria](#evaluation-criteria)
 
 ---
 
-## Overview
+## 📌 Project Overview
 
-This system applies machine learning techniques to historical customer behavior data to predict churn risk and identify key drivers of disengagement. The project is structured into two main milestones:
+This system applies machine learning techniques to historical customer behavior data to predict churn risk and identify key drivers of disengagement.
 
-- **Milestone 1:** Focuses on predictive analytics using Logistic Regression, Decision Trees, and Multi-Layer Perceptrons (MLPs). It features an interactive UI for both real-time and batch predictions.
-- **Milestone 2 (Upcoming):** Extends the predictive model into an agentic AI retention strategist utilizing LangGraph. This component will be capable of reasoning about churn and proposing targeted retention strategies via Retrieval-Augmented Generation (RAG).
-
-**Live Environment:** [Customer Churn Prediction App](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
+- **Milestone 1:** Focuses on predictive analytics using Logistic Regression, Decision Trees, and MLPs. Features an interactive UI for real-time and batch predictions.
+- **Milestone 2 (Upcoming):** Extends the predictive model into an agentic AI retention strategist using LangGraph, capable of reasoning about churn and proposing retention strategies via RAG.
 
 ---
 
-## System Architecture
+## 🚀 Live Demo
+**Access the fully deployed application here:**  
+🔗 [**Customer Churn Prediction App**](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
 
-The application is structured thoughtfully to separate concerns among the user interface, data preprocessing, model training, and inference.
+---
+
+## 🎬 Project Demo Video
+**Watch the full demonstration here:**  
+🔗 [**Demo Video (Google Drive)**](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
+
+---
+
+## 📄 Technical Report
+**Full LaTeX report (Overleaf, read-only):**  
+🔗 [**Technical Report — Milestone 1**](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+
+---
+
+## 💻 Local Quick Start
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/makeprodigy/customer-churn-prediction.git
+cd customer-churn-prediction
+```
+
+### 2. Set Up Virtual Environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate        # Mac/Linux
+# OR
+.venv\Scripts\activate           # Windows
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the Dashboard
+Deploy the interactive web interface locally:
+```bash
+streamlit run app.py
+```
+> The application will open automatically at `http://localhost:8501`.
+
+---
+
+## 🏗️ System Architecture
+
+![Customer Churn Prediction — System Architecture](GenAI_architecture_diagram.png)
 
 ```text
 customer-churn-prediction/
-├── app.py                     # Streamlit entry point (Single & Batch Predictions)
-├── requirements.txt           # Project dependencies
-├── README.md                  # System documentation
-├── customer_churn_datasest.csv# Raw training/validation dataset
-├── sample_test.csv            # Sample file for batch prediction validation
+│
+├── app.py                   ← Streamlit Dashboard (Single & Batch Predictions)
+├── requirements.txt         ← Project dependencies
+├── README.md                ← Project documentation
+│
+├── customer_churn_datasest.csv ← Raw Dataset
+├── sample_test.csv          ← Sample file for batch prediction testing
+│
 ├── src/                     
-│   ├── preprocess.py          # Data cleaning, normalization, and encoding logic
-│   └── train.py               # Model training, validation, and evaluation pipeline
-└── models/                    # Serialized Scikit-Learn pipelines (.joblib)
+│   ├── preprocess.py        ← Data cleaning & encoding (OneHotEncoding, StandardScaler)
+│   └── train.py             ← Model training & evaluation (Accuracy, F1, etc.)
+│
+└── models/                  ← Pre-trained Scikit-Learn pipelines (.joblib)
     ├── logistic_regression.joblib
     ├── decision_tree.joblib
     └── mlp.joblib
@@ -50,79 +89,35 @@ customer-churn-prediction/
 
 ---
 
-## Core Features
+## 📊 Core Features (3 Distinct Sub-Features)
 
-The system offers three distinct capabilities tailored for analytical depth and operational usability:
-
-### 1. Automated Preprocessing Pipeline
-Engineered a robust, leak-proof data pipeline utilizing Scikit-Learn's `ColumnTransformer`. It combines `StandardScaler` for continuous numerical features and `OneHotEncoder` for categorical inputs, ensuring data is strictly standardized prior to modeling.
-
-### 2. Real-Time Inference Engine
-An interactive prediction dashboard allowing users to manually construct a customer profile across 19 different metrics. The system performs a forward pass and instantly returns a calculated churn probability alongside actionable feature-level insights.
-
-### 3. Batch Evaluation Interface
-A bulk processing feature designed for high-throughput evaluation. Users can upload bulk customer profile datasets (CSV) to run the entire dataset through the inference pipeline. The system subsequently generates a dynamic dashboard featuring interactive distributions, probability histograms, and exportable result artifacts.
+1. **Automated Scikit-Learn Preprocessing Pipeline:** Engineered a robust, leak-proof data pipeline combining `StandardScaler` for continuous numerical features and `OneHotEncoder` for categoricals, managed cleanly via a `ColumnTransformer`.
+2. **Real-time Single Customer Inference Engine:** An interactive prediction dashboard where agents can manually toggle 19 different customer profile metrics and instantly receive a calculated churn probability score alongside actionable business insights.
+3. **Batch Prediction Analytics Dashboard:** A bulk processing feature allowing users to upload CSV datasets. The system runs entire datasets through the inference engine and generates a dynamic dashboard featuring interactive bar charts, probability distrbution histograms, and a filterable/downloadable results table.
 
 ---
 
-## Model Architecture & Optimization
-
-To ensure optimal predictive performance and prevent overfitting, the underlying models were tuned using `GridSearchCV` incorporating 3-fold cross-validation:
-
-- **Logistic Regression:** Optimized primarily over inverse regularization strengths (`C`) and optimization algorithms (`solver`).
-- **Decision Trees:** Constrained structurally by tuning `max_depth` and `min_samples_leaf` to ensure generalizability.
-- **Multi-Layer Perceptrons (MLPs):** Tuned across varying hidden layer topologies and L2 weight decay (`alpha`) parameters.
+## ⚙️ Model Optimization
+To ensure the highest possible performance and to satisfy the project's optimization criteria, models were fine-tuned using `GridSearchCV` with 3-fold cross-validation. 
+- **Logistic Regression** was optimized over varying inverse regularization strengths (`C`) and solvers.
+- **Decision Trees** were constrained by optimizing `max_depth` and `min_samples_leaf` to prevent overfitting.
+- **MLPs** were tuned across hidden layer sizes and L2 penalty (`alpha`) parameters.
 
 ---
 
-## Quick Start
+## ⚙️ Tech Stack
 
-### Prerequisites
-- Python 3.8 or higher.
-- `pip` package manager.
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/makeprodigy/customer-churn-prediction.git
-   cd customer-churn-prediction
-   ```
-
-2. **Initialize a virtual environment:**
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate       # macOS / Linux
-   # .venv\Scripts\activate        # Windows
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Launch the application:**
-   ```bash
-   streamlit run app.py
-   ```
-   *The application will bind to `localhost:8501` by default.*
+- **UI Framework:** Streamlit
+- **Machine Learning:** Scikit-Learn
+- **Data Manipulation:** Pandas, NumPy
+- **Visualizations:** Matplotlib, Seaborn
+- **Serialization:** Joblib
 
 ---
 
-## Technology Stack
-
-- **Application Framework:** Streamlit
-- **Machine Learning Library:** Scikit-Learn
-- **Data Engineering:** Pandas, NumPy
-- **Data Visualization:** Matplotlib, Seaborn
-- **Model Serialization:** Joblib
-
----
-
-## Evaluation Criteria (Milestone 1)
-
-This system was designed to address the mid-semester requirements:
-- Implementation and validation of classical ML algorithms.
-- Rigorous feature engineering and disciplined data preprocessing.
-- High usability, accessibility, and interactivity within the UI layer.
-- Comprehensive and transparent evaluation metrics reporting.
+## 📝 Evaluation Criteria (Milestone 1)
+This project is designed to meet the Mid-Semester requirements:
+- Application of classical ML techniques.
+- Effective feature engineering and data preprocessing.
+- High usability and interactivity of the UI.
+- Comprehensive evaluation metrics reporting.
