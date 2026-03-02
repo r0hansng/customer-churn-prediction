@@ -1,85 +1,94 @@
-# Project 5: Customer Churn Prediction & Agentic Retention Strategy
+# 📉 Customer Churn Prediction & Retention Strategy
 
-## From Predictive Analytics to Intelligent Intervention
-
-### Project Overview
-This project involves the design and implementation of an **AI-driven customer analytics system** that predicts customer churn and evolves into an agentic AI retention strategist.
-
-- **Milestone 1:** Classical machine learning techniques applied to historical customer behavior data to predict churn risk and identify key drivers of disengagement.
-- **Milestone 2:** Extension into an agent-based AI application that autonomously reasons about churn risk, retrieves retention best practices (RAG), and plans intervention strategies.
+> An AI-driven web application designed to identify at-risk customers and evaluate churn probabilities using classical Machine Learning pipelines. Built for Milestone 1 of **Project 5**.
 
 ---
 
-### Constraints & Requirements
-- **Team Size:** 3–4 Students
-- **API Budget:** Free Tier Only (Open-source models / Free APIs)
-- **Framework:** LangGraph (Recommended)
-- **Hosting:** Mandatory (Hugging Face Spaces, Streamlit Cloud, or Render)
+## 📌 Project Overview
+
+This system applies machine learning techniques to historical customer behavior data to predict churn risk and identify key drivers of disengagement.
+
+- **Milestone 1:** Focuses on predictive analytics using Logistic Regression, Decision Trees, and Multi-Layer Perceptrons (MLPs). Features an interactive UI for real-time and batch predictions.
+- **Milestone 2 (Upcoming):** Extends the predictive model into an agentic AI retention strategist using LangGraph, capable of reasoning about churn and proposing retention strategies via RAG.
 
 ---
 
-### Technology Stack
-| Component | Technology |
-| :--- | :--- |
-| **ML Models (M1)** | Logistic Regression, Decision Trees, Multi-Layer Perceptron (MLP), Scikit-Learn |
-| **Agent Framework (M2)** | LangGraph, Chroma/FAISS (RAG) |
-| **UI Framework** | Streamlit |
-| **LLMs (M2)** | Open-source models or Free-tier APIs |
+## 🚀 Quick Start
 
----
+### 1. Clone the Repository
+```bash
+git clone https://github.com/makeprodigy/customer-churn-prediction.git
+cd customer-churn-prediction
+```
 
-### Setup and Running (Milestone 1)
-
-**1. Create a virtual environment and install dependencies**
+### 2. Set Up Virtual Environment
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate        # Mac/Linux
+# OR
+.venv\Scripts\activate           # Windows
+```
+
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-**2. Train the models**
-This will process the `customer_churn_datasest.csv` data, train the models, and output evaluation metrics. It also exports the trained pipelines to the `models/` directory.
-```bash
-python src/train.py
-```
-
-**3. Run the Streamlit Interface**
-Launch the local web application to make predictions dynamically.
+### 4. Run the Dashboard
+Deploy the interactive web interface locally:
 ```bash
 streamlit run app.py
 ```
+> The application will open automatically at `http://localhost:8501`.
 
 ---
 
-### Milestones & Deliverables
+## 🏗️ Project Architecture
 
-#### Milestone 1: ML-Based Churn Prediction (Mid-Sem)
-**Objective:** Identify customers at risk using historical behavioral data focus on classical ML pipelines *without LLMs*.
-
-**Key Deliverables:**
-- Problem understanding & Business context.
-- System architecture diagram.
-- Working local application with UI (Streamlit/Gradio).
-- Model performance evaluation report (Accuracy, F1, etc.).
-
-#### Milestone 2: Agentic AI Retention Assistant (End-Sem)
-**Objective:** Extend the system into an agentic strategist that reasons about risk and retrieves best practices to generate structured recommendations.
-
-**Key Deliverables:**
-- **Publicly deployed application** (Link required).
-- Agent workflow documentation (States & Nodes).
-- Structured retention report generation.
-- GitHub Repository & Complete Codebase.
-- Demo Video (Max 5 mins).
+```text
+customer-churn-prediction/
+│
+├── app.py                   ← Streamlit Dashboard (Single & Batch Predictions)
+├── requirements.txt         ← Project dependencies
+├── README.md                ← Project documentation
+│
+├── customer_churn_datasest.csv ← Raw Dataset
+├── sample_test.csv          ← Sample file for batch prediction testing
+│
+├── src/                     
+│   ├── preprocess.py        ← Data cleaning & encoding (OneHotEncoding, StandardScaler)
+│   └── train.py             ← Model training & evaluation (Accuracy, F1, etc.)
+│
+└── models/                  ← Pre-trained Scikit-Learn pipelines (.joblib)
+    ├── logistic_regression.joblib
+    ├── decision_tree.joblib
+    └── mlp.joblib
+```
 
 ---
 
-### Evaluation Criteria
+## 📊 Core Features
 
-| Phase | Weight | Criteria |
-| :--- | :--- | :--- |
-| **Mid-Sem** | 25% | ML technique application, Feature Engineering, UI Usability, Evaluation Metrics. |
-| **End-Sem** | 30% | Reasoning quality, RAG & State management implementation, Output clarity, Deployment success. |
+- **Data Preprocessing Pipeline:** Automated handling of missing values, encoding of categorical variables, and scaling of numeric features.
+- **Model Evaluation:** Compare performance metrics across Logistic Regression (Best Performing), Decision Trees, and MLPs directly within the app.
+- **Single Customer Prediction:** Input a specific customer's profile via sidebar widgets to instantly calculate their churn risk.
+- **Batch CSV Prediction:** Upload a dataset to generate bulk predictions. Includes a visual dashboard with churn proportion charts, probability distributions, and a filterable/downloadable results table.
 
-> [!WARNING]
-> Localhost-only demonstrations will **not** be accepted for final submission. Project must be hosted.
+---
+
+## ⚙️ Tech Stack
+
+- **UI Framework:** Streamlit
+- **Machine Learning:** Scikit-Learn
+- **Data Manipulation:** Pandas, NumPy
+- **Visualizations:** Matplotlib, Seaborn
+- **Serialization:** Joblib
+
+---
+
+## 📝 Evaluation Criteria (Milestone 1)
+This project is designed to meet the Mid-Semester requirements:
+- Application of classical ML techniques.
+- Effective feature engineering and data preprocessing.
+- High usability and interactivity of the UI.
+- Comprehensive evaluation metrics reporting.
