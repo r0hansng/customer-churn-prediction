@@ -141,7 +141,7 @@ else:
     if uploaded_file is not None:
         try:
             batch_data = pd.read_csv(uploaded_file)
-            st.write("Preview of uploaded data:")
+            st.write(f"Preview of uploaded data (`{uploaded_file.name}`):")
             st.dataframe(batch_data.head())
             
             if st.button("Run Batch Prediction", type="primary"):
@@ -175,74 +175,76 @@ else:
                     # Store results in session state
                     st.session_state['batch_results'] = display_df
                     
-            # Display results if they exist in session state
-            if st.session_state['batch_results'] is not None:
-                display_df = st.session_state['batch_results']
-                
-                st.success(f"Successfully predicted churn for {len(display_df)} customers!")
-                
-                st.markdown("---")
-                st.subheader("📊 Batch Prediction Dashboard")
-                
-                churn_count = sum(display_df['Churn_Prediction'] == 'Yes')
-                retain_count = sum(display_df['Churn_Prediction'] == 'No')
-                
-                # Top Metrics
-                metrics_col1, metrics_col2, metrics_col3 = st.columns(3)
-                metrics_col1.metric("Total Customers Processed", len(display_df))
-                metrics_col2.metric("Predicted to Churn 🚨", churn_count, f"{churn_count/len(display_df):.1%} of total", delta_color="inverse")
-                metrics_col3.metric("Predicted to Stay ✅", retain_count, f"{retain_count/len(display_df):.1%} of total")
-                
-                st.markdown("<br>", unsafe_allow_html=True)
-                
-                # Charts
-                chart_col1, chart_col2 = st.columns(2)
-                
-                with chart_col1:
-                    st.markdown("**Churn Proportion**")
-                    churn_dist = pd.DataFrame({
-                        'Status': ['Churn', 'Retain'],
-                        'Count': [churn_count, retain_count]
-                    })
-                    st.bar_chart(churn_dist.set_index('Status'), color="#ff4b4b")
-                    
-                with chart_col2:
-                    st.markdown("**Churn Probability Distribution**")
-                    fig, ax = plt.subplots(figsize=(6, 4))
-                    sns.histplot(display_df['Churn_Probability_Raw'], bins=20, kde=True, ax=ax, color='#1f77b4')
-                    ax.set_xlabel('Churn Probability')
-                    ax.set_ylabel('Number of Customers')
-                    ax.set_xlim(0, 1)
-                    # Remove top and right spines
-                    sns.despine(ax=ax)
-                    fig.tight_layout()
-                    st.pyplot(fig)
-                    
-                st.markdown("---")
-                st.subheader("📋 Detailed Customer List")
-                
-                # Actionable data table
-                filter_option = st.radio("Filter customer list:", ["View All Customers", "View Only At-Risk Customers (Churn = Yes)"], horizontal=True)
-                
-                view_df = display_df.copy()
-                if filter_option == "View Only At-Risk Customers (Churn = Yes)":
-                    view_df = view_df[view_df['Churn_Prediction'] == 'Yes']
-                    
-                # Drop the raw probability column before displaying to user
-                view_df_display = view_df.drop(columns=['Churn_Probability_Raw'])
-                
-                st.dataframe(view_df_display, use_container_width=True)
-                
-                st.markdown("<br>", unsafe_allow_html=True)
-                
-                # Download button
-                csv = view_df_display.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label="⬇️ Download Shown Predictions as CSV",
-                    data=csv,
-                    file_name='churn_predictions.csv',
-                    mime='text/csv',
-                    use_container_width=True
-                )
         except Exception as e:
             st.error(f"Error processing the file. Make sure it matches the training data format. Details: {str(e)}")
+
+    # Display results if they exist in session state (works even if uploaded_file gets cleared from UI)
+    if st.session_state['batch_results'] is not None:
+        display_df = st.session_state['batch_results']
+        
+        filename_msg = f" from `{st.session_state['uploaded_filename']}`" if st.session_state['uploaded_filename'] else ""
+        st.success(f"Successfully predicted churn for {len(display_df)} customers{filename_msg}!")
+        
+        st.markdown("---")
+        st.subheader("📊 Batch Prediction Dashboard")
+        
+        churn_count = sum(display_df['Churn_Prediction'] == 'Yes')
+        retain_count = sum(display_df['Churn_Prediction'] == 'No')
+        
+        # Top Metrics
+        metrics_col1, metrics_col2, metrics_col3 = st.columns(3)
+        metrics_col1.metric("Total Customers Processed", len(display_df))
+        metrics_col2.metric("Predicted to Churn 🚨", churn_count, f"{churn_count/len(display_df):.1%} of total", delta_color="inverse")
+        metrics_col3.metric("Predicted to Stay ✅", retain_count, f"{retain_count/len(display_df):.1%} of total")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Charts
+        chart_col1, chart_col2 = st.columns(2)
+        
+        with chart_col1:
+            st.markdown("**Churn Proportion**")
+            churn_dist = pd.DataFrame({
+                'Status': ['Churn', 'Retain'],
+                'Count': [churn_count, retain_count]
+            })
+            st.bar_chart(churn_dist.set_index('Status'), color="#ff4b4b")
+            
+        with chart_col2:
+            st.markdown("**Churn Probability Distribution**")
+            fig, ax = plt.subplots(figsize=(6, 4))
+            sns.histplot(display_df['Churn_Probability_Raw'], bins=20, kde=True, ax=ax, color='#1f77b4')
+            ax.set_xlabel('Churn Probability')
+            ax.set_ylabel('Number of Customers')
+            ax.set_xlim(0, 1)
+            # Remove top and right spines
+            sns.despine(ax=ax)
+            fig.tight_layout()
+            st.pyplot(fig)
+            
+        st.markdown("---")
+        st.subheader("📋 Detailed Customer List")
+        
+        # Actionable data table
+        filter_option = st.radio("Filter customer list:", ["View All Customers", "View Only At-Risk Customers (Churn = Yes)"], horizontal=True)
+        
+        view_df = display_df.copy()
+        if filter_option == "View Only At-Risk Customers (Churn = Yes)":
+            view_df = view_df[view_df['Churn_Prediction'] == 'Yes']
+            
+        # Drop the raw probability column before displaying to user
+        view_df_display = view_df.drop(columns=['Churn_Probability_Raw'])
+        
+        st.dataframe(view_df_display, use_container_width=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Download button
+        csv = view_df_display.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="⬇️ Download Shown Predictions as CSV",
+            data=csv,
+            file_name='churn_predictions.csv',
+            mime='text/csv',
+            use_container_width=True
+        )
