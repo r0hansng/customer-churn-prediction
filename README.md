@@ -230,17 +230,17 @@ Raw Data (CSV)
 ### Core Dependencies
 | Component | Package | Version | Status |
 |-----------|---------|---------|--------|
-| Web Framework | Streamlit | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
-| ML Library | scikit-learn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
-| Data Processing | Pandas | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
-| Numerical Computing | NumPy | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
-| Visualization | Matplotlib, Seaborn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
-| Serialization | Joblib | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success.svg)]() |
+| Web Framework | Streamlit | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| ML Library | scikit-learn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| Data Processing | Pandas | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| Numerical Computing | NumPy | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| Visualization | Matplotlib, Seaborn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| Serialization | Joblib | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
 
 ### Development Tools
-- [![Git](https://img.shields.io/badge/Git-Version%20Control-orange.svg?logo=git)](https://git-scm.com/) Version control
-- [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37726.svg?logo=jupyter)](https://jupyter.org/) Experimentation
-- [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?logo=python)](https://www.python.org/) 3.8+
+- [![Git](https://img.shields.io/badge/Git-Version%20Control-orange?style=flat&logo=git)](https://git-scm.com/) Version control
+- [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37726?style=flat&logo=jupyter)](https://jupyter.org/) Experimentation
+- [![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat&logo=python)](https://www.python.org/) 3.8+
 
 ---
 
@@ -323,8 +323,8 @@ streamlit run app.py  # Local testing
 git push              # Deploy to Streamlit Cloud
 ```
 
-[![Deployment Platform](https://img.shields.io/badge/Deployment-Streamlit%20Cloud-FF1493.svg?logo=streamlit)](https://streamlit.io/)
-[![Status](https://img.shields.io/badge/Environment-Production-success.svg)]()
+[![Deployment Platform](https://img.shields.io/badge/Deployment-Streamlit%20Cloud-FF1493?style=flat&logo=streamlit)](https://streamlit.io/)
+[![Status](https://img.shields.io/badge/Environment-Production-success?style=flat)]()
 
 ### Docker Deployment
 ```dockerfile
@@ -335,24 +335,24 @@ RUN pip install -r requirements.txt
 CMD ["streamlit", "run", "app.py"]
 ```
 
-[![Docker Support](https://img.shields.io/badge/Docker-Supported-blue.svg?logo=docker)](https://www.docker.com/)
-[![Image Size](https://img.shields.io/badge/Image%20Size-%3C500MB-informational.svg)]()
+[![Docker Support](https://img.shields.io/badge/Docker-Supported-blue?style=flat&logo=docker)](https://www.docker.com/)
+[![Image Size](https://img.shields.io/badge/Image%20Size-%3C500MB-informational?style=flat)]()
 
 ### Performance Specifications
 | Metric | Target | Status |
 |--------|--------|--------|
-| Single Prediction Latency | <100ms | [![Target Met](https://img.shields.io/badge/Status-Met-success.svg)]() |
-| Batch Throughput | 1,000 records/sec | [![Target Met](https://img.shields.io/badge/Status-Met-success.svg)]() |
-| Model Loading Time | <2s | [![Target Met](https://img.shields.io/badge/Status-Met-success.svg)]() |
-| Memory Footprint | <500MB | [![Target Met](https://img.shields.io/badge/Status-Met-success.svg)]() |
+| Single Prediction Latency | <100ms | [![Target Met](https://img.shields.io/badge/Status-Met-success?style=flat)]() |
+| Batch Throughput | 1,000 records/sec | [![Target Met](https://img.shields.io/badge/Status-Met-success?style=flat)]() |
+| Model Loading Time | <2s | [![Target Met](https://img.shields.io/badge/Status-Met-success?style=flat)]() |
+| Memory Footprint | <500MB | [![Target Met](https://img.shields.io/badge/Status-Met-success?style=flat)]() |
 
 ---
 
 ## Support & Resources
 
-[![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-red.svg?logo=github)](https://github.com/makeprodigy/customer-churn-prediction/issues)
-[![Documentation](https://img.shields.io/badge/Documentation-Complete-blue.svg)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
-[![Demo Available](https://img.shields.io/badge/Demo-Available-brightgreen.svg)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
+[![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-red?style=flat&logo=github)](https://github.com/makeprodigy/customer-churn-prediction/issues)
+[![Documentation](https://img.shields.io/badge/Documentation-Complete-blue?style=flat)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+[![Demo Available](https://img.shields.io/badge/Demo-Available-brightgreen?style=flat)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
 - **Issues & Bug Reports:** [GitHub Issues](https://github.com/makeprodigy/customer-churn-prediction/issues)
 - **Technical Documentation:** [Technical Report](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
@@ -362,7 +362,7 @@ CMD ["streamlit", "run", "app.py"]
 
 ## License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)](https://opensource.org/licenses/MIT)
 
 This project is licensed under the MIT License. See LICENSE file for details.
 
@@ -372,8 +372,8 @@ This project is licensed under the MIT License. See LICENSE file for details.
 
 | Version | Date | Status | Changes |
 |---------|------|--------|---------|
-| 1.0.0 | 2026-04-13 | [![Release](https://img.shields.io/badge/Status-Stable-success.svg)]() | Initial release with classical ML models |
-| 0.9.0 | 2026-04-10 | [![Release](https://img.shields.io/badge/Status-Beta-orange.svg)]() | Beta release for testing |
+| 1.0.0 | 2026-04-13 | [![Release](https://img.shields.io/badge/Status-Stable-success?style=flat)]() | Initial release with classical ML models |
+| 0.9.0 | 2026-04-10 | [![Release](https://img.shields.io/badge/Status-Beta-orange?style=flat)]() | Beta release for testing |
 
 ---
 
