@@ -6,25 +6,25 @@
 
 ## Build Status & Release Information
 
-[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Status: Active](https://img.shields.io/badge/Status-Active%20Development-brightgreen.svg)](https://github.com/makeprodigy/customer-churn-prediction)
-[![Version](https://img.shields.io/badge/Version-1.0.0-informational.svg)](https://github.com/makeprodigy/customer-churn-prediction/releases)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black.svg?logo=github)](https://github.com/makeprodigy/customer-churn-prediction)
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue?style=flat)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)](https://opensource.org/licenses/MIT)
+[![Status: Active](https://img.shields.io/badge/Status-Active%20Development-brightgreen?style=flat)](https://github.com/makeprodigy/customer-churn-prediction)
+[![Version](https://img.shields.io/badge/Version-1.0.0-informational?style=flat)](https://github.com/makeprodigy/customer-churn-prediction/releases)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=flat&logo=github)](https://github.com/makeprodigy/customer-churn-prediction)
 
 ### Technology Stack
 
-[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg?logo=streamlit)](https://streamlit.io/)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-Latest-F7931E.svg?logo=scikit-learn)](https://scikit-learn.org/)
-[![Pandas](https://img.shields.io/badge/Pandas-Latest-150458.svg?logo=pandas)](https://pandas.pydata.org/)
-[![NumPy](https://img.shields.io/badge/NumPy-Latest-013243.svg?logo=numpy)](https://numpy.org/)
-[![Jupyter](https://img.shields.io/badge/Jupyter-Latest-F37726.svg?logo=jupyter)](https://jupyter.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red?style=flat&logo=streamlit)](https://streamlit.io/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-Latest-F7931E?style=flat&logo=scikit-learn)](https://scikit-learn.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-Latest-150458?style=flat&logo=pandas)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-Latest-013243?style=flat&logo=numpy)](https://numpy.org/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-Latest-F37726?style=flat&logo=jupyter)](https://jupyter.org/)
 
 ### Deployment & Documentation
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
-[![View Technical Report](https://img.shields.io/badge/Technical%20Report-Overleaf-00A3E0.svg)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
-[![Demo Video](https://img.shields.io/badge/Demo-Google%20Drive-4285F4.svg?logo=googledrive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
+[![View Technical Report](https://img.shields.io/badge/Technical%20Report-Overleaf-00A3E0?style=flat)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+[![Demo Video](https://img.shields.io/badge/Demo-Google%20Drive-4285F4?style=flat&logo=googledrive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
 ---
 
@@ -157,7 +157,7 @@ Raw Data (CSV)
 ## Core Capabilities
 
 ### 1. Advanced Data Preprocessing
-[![Status: Implemented](https://img.shields.io/badge/Status-Implemented-success.svg)]()
+[![Status: Implemented](https://img.shields.io/badge/Status-Implemented-success?style=flat)]()
 
 - Automated pipeline using `ColumnTransformer`
 - Numerical feature normalization via `StandardScaler`
@@ -166,7 +166,7 @@ Raw Data (CSV)
 - Data leakage prevention through proper train-test segregation
 
 ### 2. Real-Time Inference Engine
-[![Latency: <100ms](https://img.shields.io/badge/Latency-%3C100ms-informational.svg)]()
+[![Latency: <100ms](https://img.shields.io/badge/Latency-%3C100ms-informational?style=flat)]()
 
 - Interactive customer profile builder with 19 configurable attributes
 - Instantaneous churn probability prediction
@@ -174,7 +174,7 @@ Raw Data (CSV)
 - Actionable business insights generation
 
 ### 3. Batch Processing & Analytics
-[![Throughput: 1000req/s](https://img.shields.io/badge/Throughput-1000%20req%2Fs-informational.svg)]()
+[![Throughput: 1000req/s](https://img.shields.io/badge/Throughput-1000%20req%2Fs-informational?style=flat)]()
 
 - Bulk dataset inference capability
 - Dynamic analytics dashboard with interactive visualizations
@@ -190,9 +190,9 @@ Raw Data (CSV)
 
 | Algorithm | Status | CV Score | Production |
 |-----------|--------|----------|------------|
-| Logistic Regression | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success.svg)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success.svg)]() |
-| Decision Tree Classifier | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success.svg)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success.svg)]() |
-| Multi-Layer Perceptron | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success.svg)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success.svg)]() |
+| Logistic Regression | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| Decision Tree Classifier | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| Multi-Layer Perceptron | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
 
 ### Training Methodology
 
@@ -217,9 +217,9 @@ Raw Data (CSV)
 
 | Model | Accuracy | Precision | Recall | F1-Score | Status |
 |-------|----------|-----------|--------|----------|--------|
-| Logistic Regression | ![Accuracy](https://img.shields.io/badge/Accuracy-81.97%25-brightgreen.svg) | ![Precision](https://img.shields.io/badge/Precision-68.42%25-blue.svg) | ![Recall](https://img.shields.io/badge/Recall-59.25%25-orange.svg) | ![F1](https://img.shields.io/badge/F1--Score-63.51%25-informational.svg) | [![Best](https://img.shields.io/badge/Ranking-1st-gold.svg)]() |
-| Decision Tree | ![Accuracy](https://img.shields.io/badge/Accuracy-79.99%25-brightgreen.svg) | ![Precision](https://img.shields.io/badge/Precision-61.88%25-blue.svg) | ![Recall](https://img.shields.io/badge/Recall-63.54%25-orange.svg) | ![F1](https://img.shields.io/badge/F1--Score-62.70%25-informational.svg) | [![Competitive](https://img.shields.io/badge/Ranking-2nd-silver.svg)]() |
-| MLP (Neural Network) | ![Accuracy](https://img.shields.io/badge/Accuracy-78.57%25-brightgreen.svg) | ![Precision](https://img.shields.io/badge/Precision-61.41%25-blue.svg) | ![Recall](https://img.shields.io/badge/Recall-51.21%25-orange.svg) | ![F1](https://img.shields.io/badge/F1--Score-55.85%25-informational.svg) | [![Competitive](https://img.shields.io/badge/Ranking-3rd-inactive.svg)]() |
+| Logistic Regression | ![Accuracy](https://img.shields.io/badge/Accuracy-81.97%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-68.42%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-59.25%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-63.51%25-informational?style=flat) | [![Best](https://img.shields.io/badge/Ranking-1st-gold?style=flat)]() |
+| Decision Tree | ![Accuracy](https://img.shields.io/badge/Accuracy-79.99%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-61.88%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-63.54%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-62.70%25-informational?style=flat) | [![Competitive](https://img.shields.io/badge/Ranking-2nd-silver?style=flat)]() |
+| MLP (Neural Network) | ![Accuracy](https://img.shields.io/badge/Accuracy-78.57%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-61.41%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-51.21%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-55.85%25-informational?style=flat) | [![Competitive](https://img.shields.io/badge/Ranking-3rd-inactive?style=flat)]() |
 
 **Evaluation Set:** Held-out test set (20% of 7,043 samples = 1,409 customers)
 
