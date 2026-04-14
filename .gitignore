@@ -3,3 +3,4 @@ models/
 __pycache__/
 *.joblib
 .DS_Store
+venv/
