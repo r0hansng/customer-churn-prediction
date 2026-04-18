@@ -1,9 +1,25 @@
+"""
+Data loading, feature engineering, and preprocessing pipeline
+for the Customer Churn Prediction project.
+
+Provides load_and_preprocess_data() — the single, reusable function
+consumed by src/evaluation/train.py and the experiment notebooks.
+"""
+
+import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+
+# Default data path resolved relative to this file so the function works
+# regardless of which directory it is called from.
+_DEFAULT_DATA_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "customer_churn_datasest.csv"
+)
 
 # Service columns whose "Yes" value indicates an active add-on
 _SERVICE_COLS = [
@@ -52,52 +68,73 @@ def _engineer_features(X: pd.DataFrame) -> pd.DataFrame:
     return X
 
 
-def load_and_preprocess_data(filepath='customer_churn_datasest.csv'):
-    # Load dataset
+def load_and_preprocess_data(filepath: str = _DEFAULT_DATA_PATH):
+    """
+    Loads the raw churn dataset, engineers new features, builds a
+    ColumnTransformer preprocessor, and returns a stratified train/test split.
+
+    Parameters
+    ----------
+    filepath : str
+        Absolute (or relative) path to the raw CSV dataset.
+
+    Returns
+    -------
+    X_train, X_test : pd.DataFrame
+    y_train, y_test : pd.Series  (0 = No Churn, 1 = Churn)
+    preprocessor    : sklearn ColumnTransformer (unfitted)
+    """
+    # --- Load & basic cleaning ---
     df = pd.read_csv(filepath)
 
-    # Drop customerID as it's not a useful feature
-    if 'customerID' in df.columns:
-        df = df.drop('customerID', axis=1)
+    # Drop customerID — not a predictive feature
+    if "customerID" in df.columns:
+        df = df.drop("customerID", axis=1)
 
-    # TotalCharges is object, need to convert to numeric, coercing errors to NaN
-    if 'TotalCharges' in df.columns:
-        df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+    # TotalCharges is stored as object; coerce blank strings to NaN
+    if "TotalCharges" in df.columns:
+        df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 
-    # Separate features and target
-    X = df.drop('Churn', axis=1)
-    y = df['Churn'].apply(lambda x: 1 if x == 'Yes' else 0)
+    # --- Features & target ---
+    X = df.drop("Churn", axis=1)
+    y = df["Churn"].apply(lambda x: 1 if x == "Yes" else 0)
 
-    # Feature engineering
+    # --- Feature engineering ---
     X = _engineer_features(X)
 
-    # Identify numerical and categorical columns
+    # --- Feature groups for the ColumnTransformer ---
     numeric_features = [
-        'tenure', 'MonthlyCharges', 'TotalCharges',
-        'avg_monthly_charge', 'service_count', 'charges_per_service',
-        'is_new_customer', 'is_long_term',
+        "tenure", "MonthlyCharges", "TotalCharges",
+        # Engineered features (all numeric by construction)
+        "avg_monthly_charge", "service_count", "charges_per_service",
+        "is_new_customer", "is_long_term",
     ]
-    categorical_features = [col for col in X.columns if col not in numeric_features]
+    categorical_features = [
+        col for col in X.columns if col not in numeric_features
+    ]
 
-    # Create preprocessing pipelines
+    # --- Preprocessing pipelines ---
     numeric_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler",  StandardScaler()),
     ])
 
     categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore'))
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot",  OneHotEncoder(handle_unknown="ignore")),
     ])
 
-    # Combine transformers into a ColumnTransformer
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', numeric_transformer, numeric_features),
-            ('cat', categorical_transformer, categorical_features)
-        ])
+    preprocessor = ColumnTransformer(transformers=[
+        ("num", numeric_transformer,     numeric_features),
+        ("cat", categorical_transformer, categorical_features),
+    ])
 
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # --- Stratified split (preserves 26.5 / 73.5 churn ratio in both sets) ---
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=0.2,
+        random_state=42,
+        stratify=y,
+    )
 
     return X_train, X_test, y_train, y_test, preprocessor
