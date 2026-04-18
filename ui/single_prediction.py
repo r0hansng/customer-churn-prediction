@@ -12,6 +12,24 @@ try:
 except ImportError as e:
     engine_available = False
     print(f"Engine not available: {e}")
+
+try:
+    from src.preprocessing.preprocess import _engineer_features
+except ImportError:
+    # Fallback: define inline so the UI never crashes even if src path differs
+    _SERVICE_COLS = [
+        "PhoneService", "MultipleLines", "OnlineSecurity", "OnlineBackup",
+        "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies",
+    ]
+    def _engineer_features(X):
+        X = X.copy()
+        X["avg_monthly_charge"]  = X["TotalCharges"] / (X["tenure"] + 1)
+        X["service_count"]       = X[_SERVICE_COLS].apply(lambda r: (r == "Yes").sum(), axis=1)
+        X["charges_per_service"] = X["MonthlyCharges"] / (X["service_count"] + 1)
+        X["is_new_customer"]     = (X["tenure"] <= 12).astype(int)
+        X["is_long_term"]        = (X["tenure"] >= 48).astype(int)
+        return X
+
 def show_single_prediction(models):
     """Interface for making single customer predictions."""
 
@@ -82,14 +100,18 @@ def show_single_prediction(models):
             "TotalCharges": total_charges,
         }])
 
+        # Apply feature engineering BEFORE passing to models
+        # (models were trained with engineered features pre-computed)
+        input_data_engineered = _engineer_features(input_data)
+
         st.markdown("### 📊 Prediction Results")
 
         # Collect all model predictions first
         all_results = {}
         for model_name, model in models.items():
             try:
-                prediction = model.predict(input_data)[0]
-                proba = model.predict_proba(input_data)[0]
+                prediction = model.predict(input_data_engineered)[0]
+                proba = model.predict_proba(input_data_engineered)[0]
                 all_results[model_name] = {
                     "prediction": prediction,
                     "churn_prob": proba[1] * 100

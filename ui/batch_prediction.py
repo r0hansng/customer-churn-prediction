@@ -2,6 +2,22 @@ import streamlit as st
 import pandas as pd
 import io
 
+try:
+    from src.preprocessing.preprocess import _engineer_features
+except ImportError:
+    _SERVICE_COLS = [
+        "PhoneService", "MultipleLines", "OnlineSecurity", "OnlineBackup",
+        "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies",
+    ]
+    def _engineer_features(X):
+        X = X.copy()
+        X["avg_monthly_charge"]  = X["TotalCharges"] / (X["tenure"] + 1)
+        X["service_count"]       = X[_SERVICE_COLS].apply(lambda r: (r == "Yes").sum(), axis=1)
+        X["charges_per_service"] = X["MonthlyCharges"] / (X["service_count"] + 1)
+        X["is_new_customer"]     = (X["tenure"] <= 12).astype(int)
+        X["is_long_term"]        = (X["tenure"] >= 48).astype(int)
+        return X
+
 REQUIRED_COLUMNS = [
     "gender", "SeniorCitizen", "Partner", "Dependents", "tenure",
     "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity",
@@ -45,8 +61,12 @@ def show_batch_prediction(models):
 
             if st.button("🚀 Run Batch Predictions", key="batch_predict"):
                 model = models[model_name]
-                predictions = model.predict(predict_df)
-                probas = model.predict_proba(predict_df)[:, 1]
+
+                # Apply feature engineering BEFORE inference
+                predict_df_engineered = _engineer_features(predict_df)
+
+                predictions = model.predict(predict_df_engineered)
+                probas = model.predict_proba(predict_df_engineered)[:, 1]
 
                 results_df = predict_df.copy()
                 if id_col is not None:
