@@ -4,3 +4,12 @@ scikit-learn
 matplotlib
 seaborn
 joblib
+langchain
+langgraph
+langchain-google-genai
+langchain-community
+langchain-text-splitters
+faiss-cpu
+imbalanced-learn
+python-dotenv
+tiktoken
