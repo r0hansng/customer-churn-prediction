@@ -24,7 +24,7 @@
 
 ### Deployment & Documentation
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-prediction-m2-sem4.streamlit.app/)
 [![View Technical Report](https://img.shields.io/badge/Technical%20Report-Overleaf-00A3E0?style=flat)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
 [![Demo Video](https://img.shields.io/badge/Demo-Google%20Drive-4285F4?style=flat&logo=googledrive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
@@ -38,7 +38,7 @@ This system delivers predictive analytics for customer churn identification thro
 - **Milestone 1** ✅ **Complete**: Classical ML predictive analytics — 5 models with SMOTE, feature engineering, ensemble methods and a full Streamlit dashboard
 - **Milestone 2** ✅ **Complete**: Agentic AI retention strategy engine powered by LangGraph, RAG (FAISS + Gemini Embeddings), and Gemini 2.5 Flash
 
-**Deployment:** [Live Application](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
+**Deployment:** [Live Application](https://customer-churn-prediction-m2-sem4.streamlit.app/)
 
 ---
 
