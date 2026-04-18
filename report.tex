@@ -665,7 +665,45 @@ The two nodes are connected in a \texttt{StateGraph} (LangGraph), compiled into 
 
 \subsection{Streamlit Integration}
 
-The retention engine is surfaced in the Single Prediction UI. After a high-risk prediction is confirmed by the ensemble, a ``Generate Retention Strategy (AI)'' button appears. Clicking it invokes \texttt{run\_retention\_engine()} and renders the Gemini-generated strategy inline with Markdown formatting. API keys are retrieved securely from Streamlit Secrets on Streamlit Cloud, with a local \texttt{.env} fallback for development.
+The retention engine is surfaced in two modes within the Streamlit dashboard:
+
+\begin{enumerate}[leftmargin=2em]
+    \item \textbf{Single Prediction} (\texttt{ui/single\_prediction.py}): After a high-risk prediction is confirmed by the ensemble, a ``Generate Retention Strategy (AI)'' button appears. Clicking it invokes \texttt{run\_retention\_engine()} and renders the Gemini-generated strategy inline with Markdown formatting.
+    \item \textbf{Batch Prediction} (\texttt{ui/batch\_prediction.py}): After running predictions on an uploaded CSV, a ``Generate Collective Retention Strategy (AI)'' button appears for any batch containing predicted churners (Section~\ref{sec:batch-retention}).
+\end{enumerate}
+
+API keys are retrieved securely from Streamlit Secrets on Streamlit Cloud, with a local \texttt{.env} fallback for development.
+
+\subsection{Batch Collective Retention Strategy}
+\label{sec:batch-retention}
+
+For bulk inference use cases it is impractical and expensive to generate an individual Gemini API call per churner --- a dataset with 7,043 customers and 26.5\% churn rate would require $\approx 1{,}866$ sequential LLM requests. Instead, the system follows an \textbf{aggregate-then-generate} pattern:
+
+\begin{enumerate}[leftmargin=2em]
+    \item \textbf{Segment Profiling} (\texttt{graph\_engine.\_build\_segment\_profile()}): After batch predictions complete, all rows predicted to churn are isolated. Fifteen aggregate statistics are computed across the at-risk population:
+    \begin{itemize}[leftmargin=2em]
+        \item Numerical: average churn probability, average tenure, average monthly charges, average active service count.
+        \item Categorical (mode): dominant contract type, internet service tier, payment method.
+        \item Proportional: \% Month-to-month, \% Fiber optic, \% Electronic check, \% Senior Citizen, \% No Partner, \% Paperless Billing.
+    \end{itemize}
+    \item \textbf{RAG Retrieval} (\texttt{\_retrieve\_batch\_policies()}): The segment profile is serialised to a natural-language string and used to retrieve the top-3 most relevant policy chunks from the FAISS index --- one extra chunk compared to the single-customer case to capture broader policy coverage.
+    \item \textbf{Strategy Generation} (\texttt{\_generate\_batch\_strategy()}): A single \texttt{Gemini 2.5 Flash} call receives the aggregate profile and retrieved policies. The prompt instructs the model to produce a structured retention programme covering:
+\end{enumerate}
+
+\[
+\text{START} \;\rightarrow\; \underbrace{\texttt{\_retrieve\_batch\_policies}}_{\text{RAG node}} \;\rightarrow\; \underbrace{\texttt{\_generate\_batch\_strategy}}_{\text{LLM node}} \;\rightarrow\; \text{END}
+\]
+
+\begin{tcolorbox}[colback=lightgray, colframe=primary, title={\textbf{Batch Strategy Output Structure}}]
+\begin{enumerate}[leftmargin=1.5em, itemsep=2pt]
+    \item \textbf{Root Cause Analysis} --- why this segment is leaving.
+    \item \textbf{Recommended Retention Initiatives} --- exact offers, discounts, contract upgrades, citing specific company policies.
+    \item \textbf{Estimated Impact} --- projected retention lift if initiatives are executed.
+    \item \textbf{Sub-Segment Targeting} --- differentiated treatment for demographic sub-groups (e.g.\ senior citizens, high-bill customers, no-partner customers).
+\end{enumerate}
+\end{tcolorbox}
+
+\textbf{Cost efficiency}: regardless of batch size, exactly \textbf{one Gemini API call} is made. The approach shifts the analytical burden from the LLM to a deterministic aggregation function, preserving statistical representativeness while eliminating per-record API overhead.
 
 % ═══════════════════════════════════════════════════════════════════════════════
 \section*{Conclusion}
@@ -678,8 +716,9 @@ This report documents the complete end-to-end development of the Customer Churn 
     \item A \textbf{leak-proof imblearn Pipeline} combining feature engineering, SMOTE, and \texttt{class\_weight} handling ensures correct treatment of class imbalance.
     \item \textbf{Five classifiers} tuned via RandomizedSearchCV (ROC-AUC): Logistic Regression (best Recall: 78.88\%, 89.57\% at threshold 0.35), Random Forest (best F1: 62.05\%), and Gradient Boosting (best CV ROC-AUC: 84.59\%).
     \item Churn-class \textbf{Recall improved by +13--23 percentage points} over the Milestone 1 baseline through SMOTE, class weighting, and feature engineering.
-    \item A \textbf{LangGraph + RAG retention engine} (Gemini 2.5 Flash + FAISS) generates personalised, policy-grounded retention plans for flagged customers.
-    \item A \textbf{fully integrated Streamlit dashboard} provides single-customer inference with ensemble verdict and AI strategy, bulk batch processing, and a metrics comparison page.
+    \item A \textbf{LangGraph + RAG retention engine} (Gemini 2.5 Flash + FAISS) generates personalised, policy-grounded retention plans for individually flagged high-risk customers.
+    \item A \textbf{Batch Collective Retention Strategy} aggregates all predicted churners into a single segment profile and generates one cost-effective, population-level retention programme via a single Gemini API call --- efficient regardless of batch size.
+    \item A \textbf{fully integrated Streamlit dashboard} provides single-customer inference with ensemble verdict and AI strategy, bulk batch processing with collective retention programme, and a metrics comparison page.
     \item The system is \textbf{deployment-ready} on Streamlit Community Cloud with secure API key handling via Streamlit Secrets.
 \end{itemize}
 

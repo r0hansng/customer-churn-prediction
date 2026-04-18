@@ -183,11 +183,18 @@ Raw Data (CSV)
 ### 3. Batch Processing & Analytics
 [![Throughput: 1000req/s](https://img.shields.io/badge/Throughput-1000%20req%2Fs-informational?style=flat)]()
 
-- Bulk dataset inference capability
-- Dynamic analytics dashboard with interactive visualizations
-- Probability distribution analysis
-- Filterable results with export functionality
-- CSV output for downstream analysis
+- Bulk dataset inference across all 5 models
+- Model selector: choose which trained model to run on the uploaded CSV
+- Summary metrics: total customers, predicted churners, churn rate
+- CSV download with `Predicted_Churn` and `Churn_Probability (%)` columns
+- **🧠 Collective Retention Strategy (AI):** After predictions complete, one button
+  aggregates all at-risk customers into a population-level profile and makes a
+  **single Gemini 2.5 Flash API call** to generate a cost-effective, whole-segment
+  retention programme — regardless of batch size:
+  - **Root Cause Analysis** of the at-risk segment
+  - **Recommended Retention Initiatives** citing company policies
+  - **Estimated Impact** (projected retention lift)
+  - **Sub-Segment Targeting** for demographic sub-groups (seniors, high-bill, etc.)
 
 ---
 
@@ -389,6 +396,7 @@ This project is licensed under the MIT License. See LICENSE file for details.
 
 | Version | Date | Status | Changes |
 |---------|------|--------|---------|
+| 2.1.0 | 2026-04-19 | [![Release](https://img.shields.io/badge/Status-Latest-blue?style=flat)]() | Batch Collective Retention Strategy: aggregate-then-generate, 1 API call for any batch size |
 | 2.0.0 | 2026-04-19 | [![Release](https://img.shields.io/badge/Status-Final-success?style=flat)]() | Milestone 2 complete: SMOTE, feature engineering, RF + GB ensembles, LangGraph RAG retention engine |
 | 1.0.0 | 2026-04-13 | [![Release](https://img.shields.io/badge/Status-Stable-success?style=flat)]() | Milestone 1: classical ML models (LR, DT, MLP), Streamlit dashboard |
 | 0.9.0 | 2026-04-10 | [![Release](https://img.shields.io/badge/Status-Beta-orange?style=flat)]() | Beta release for testing |
