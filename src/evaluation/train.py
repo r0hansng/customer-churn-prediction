@@ -106,7 +106,37 @@ MODEL_CONFIGS = {
 DECISION_THRESHOLD = 0.35   # lower than 0.50 to favour Recall on churn class
 
 
+# ---------------------------------------------------------------------------
+# Threshold-aware metric reporter
+# ---------------------------------------------------------------------------
+def _metrics_at_threshold(model, X_test, y_test, threshold: float):
+    """Return a dict of common metrics evaluated at a given decision threshold."""
+    proba  = model.predict_proba(X_test)[:, 1]
+    y_pred = (proba >= threshold).astype(int)
+    return {
+        "accuracy":  accuracy_score(y_test, y_pred),
+        "precision": precision_score(y_test, y_pred, zero_division=0),
+        "recall":    recall_score(y_test, y_pred, zero_division=0),
+        "f1":        f1_score(y_test, y_pred, zero_division=0),
+        "roc_auc":   roc_auc_score(y_test, proba),
+        "confusion_matrix": confusion_matrix(y_test, y_pred),
+        "y_pred":    y_pred,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Main training & evaluation function
+# ---------------------------------------------------------------------------
 def train_and_evaluate(X_train, X_test, y_train, y_test, preprocessor):
+    """
+    For each model:
+      1. Build an imblearn Pipeline: Preprocessor → SMOTE → Classifier
+      2. Tune with RandomizedSearchCV (scoring=roc_auc, cv=5)
+      3. Evaluate on the held-out test set at both 0.50 and 0.35 thresholds
+      4. Save the best pipeline to models/<name>.joblib
+
+    Returns a results dict keyed by model name.
+    """
     models_dir = os.path.join(_PROJECT_ROOT, "models")
     os.makedirs(models_dir, exist_ok=True)
 
@@ -138,24 +168,72 @@ def train_and_evaluate(X_train, X_test, y_train, y_test, preprocessor):
         search.fit(X_train, y_train)
         best = search.best_estimator_
 
-        y_pred = best.predict(X_test)
+        # Evaluate at default (0.50) and tuned (0.35) thresholds
+        m50 = _metrics_at_threshold(best, X_test, y_test, threshold=0.50)
+        m35 = _metrics_at_threshold(best, X_test, y_test, threshold=DECISION_THRESHOLD)
+
         results[name] = {
-            "model":       best,
-            "best_params": search.best_params_,
-            "cv_roc_auc":  search.best_score_,
-            "accuracy":    accuracy_score(y_test, y_pred),
-            "precision":   precision_score(y_test, y_pred, zero_division=0),
-            "recall":      recall_score(y_test, y_pred, zero_division=0),
-            "f1":          f1_score(y_test, y_pred, zero_division=0),
-            "roc_auc":     roc_auc_score(y_test, best.predict_proba(X_test)[:, 1]),
-            "confusion_matrix": confusion_matrix(y_test, y_pred),
+            "model":        best,
+            "best_params":  search.best_params_,
+            "cv_roc_auc":   search.best_score_,
+            # Store threshold=0.50 result as the canonical metric set
+            **{k: m50[k] for k in ["accuracy","precision","recall","f1","roc_auc","confusion_matrix"]},
+            "metrics_35": m35,
         }
 
-        print(f"  Best params : {search.best_params_}")
-        print(f"  CV ROC-AUC  : {search.best_score_:.4f}")
+        # ---- Print ----
+        print(f"  Best params   : {search.best_params_}")
+        print(f"  CV ROC-AUC    : {search.best_score_:.4f}")
+        print()
+        print(f"  {'Metric':<12}  {'@ 0.50':>8}  {'@ 0.35':>8}")
+        print(f"  {'-'*32}")
+        for metric in ["accuracy", "precision", "recall", "f1", "roc_auc"]:
+            v50 = m50[metric]
+            v35 = m35[metric]
+            print(f"  {metric:<12}  {v50:>7.2%}  {v35:>7.2%}")
+        print(f"\n  Confusion matrix (threshold=0.50):\n{m50['confusion_matrix']}")
+        print(f"\n  Classification report (threshold=0.50):")
+        print(classification_report(y_test, m50["y_pred"],
+                                    target_names=["No Churn", "Churn"]))
 
+        # Save the pipeline (predict() will use sklearn's default 0.50 threshold)
         out_path = os.path.join(models_dir, f"{name}.joblib")
         joblib.dump(best, out_path)
         print(f"  Saved → {out_path}")
 
+    # ---- Summary table ----
+    print("\n" + "="*60)
+    print("  FINAL COMPARISON  (test set, threshold = 0.50)")
+    print("="*60)
+    rows = []
+    for name, r in results.items():
+        rows.append({
+            "Model":     name.replace("_", " ").title(),
+            "Accuracy":  f"{r['accuracy']*100:.2f}%",
+            "Precision": f"{r['precision']*100:.2f}%",
+            "Recall":    f"{r['recall']*100:.2f}%",
+            "F1":        f"{r['f1']*100:.2f}%",
+            "ROC-AUC":   f"{r['roc_auc']*100:.2f}%",
+        })
+    print(pd.DataFrame(rows).set_index("Model").to_string())
+    print()
+
     return results
+
+
+# ---------------------------------------------------------------------------
+# Entrypoint
+# ---------------------------------------------------------------------------
+if __name__ == "__main__":
+    data_path = os.path.join(
+        _PROJECT_ROOT, "src", "data", "customer_churn_datasest.csv"
+    )
+    print(f"Loading data from : {data_path}")
+    X_train, X_test, y_train, y_test, preprocessor = load_and_preprocess_data(data_path)
+    print(f"Train size : {X_train.shape[0]} samples | {X_train.shape[1]} features")
+    print(f"Test  size : {X_test.shape[0]} samples")
+    print(f"Churn rate (train) : {y_train.mean()*100:.1f}%")
+    print(f"Churn rate (test)  : {y_test.mean()*100:.1f}%")
+
+    train_and_evaluate(X_train, X_test, y_train, y_test, preprocessor)
+    print("✅  All models trained, evaluated, and saved.")
