@@ -17,7 +17,9 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red?style=flat&logo=streamlit)](https://streamlit.io/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-Latest-F7931E?style=flat&logo=scikit-learn)](https://scikit-learn.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Latest-150458?style=flat&logo=pandas)](https://pandas.pydata.org/)
-[![NumPy](https://img.shields.io/badge/NumPy-Latest-013243?style=flat&logo=numpy)](https://numpy.org/)
+[![LangChain](https://img.shields.io/badge/LangChain-Latest-1C3C3C?style=flat)](https://www.langchain.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Latest-4B8BBE?style=flat)](https://langchain-ai.github.io/langgraph/)
+[![Gemini](https://img.shields.io/badge/Gemini%202.5%20Flash-Google%20AI-4285F4?style=flat&logo=google)](https://ai.google.dev/)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Latest-F37726?style=flat&logo=jupyter)](https://jupyter.org/)
 
 ### Deployment & Documentation
@@ -33,8 +35,8 @@
 This system delivers predictive analytics for customer churn identification through a comprehensive machine learning pipeline. The platform combines advanced preprocessing, model optimization, and real-time inference capabilities with an enterprise-grade web interface.
 
 **Key Milestones:**
-- **Milestone 1** (Current): Classical ML predictive analytics with comprehensive UI for single and batch inference
-- **Milestone 2** (Planned): Intelligent retention strategy engine powered by LangGraph and RAG
+- **Milestone 1** ✅ **Complete**: Classical ML predictive analytics — 5 models with SMOTE, feature engineering, ensemble methods and a full Streamlit dashboard
+- **Milestone 2** ✅ **Complete**: Agentic AI retention strategy engine powered by LangGraph, RAG (FAISS + Gemini Embeddings), and Gemini 2.5 Flash
 
 **Deployment:** [Live Application](https://customer-churn-predictiongit-mid-sem-milestone-1.streamlit.app/)
 
@@ -101,35 +103,40 @@ customer-churn-prediction/
 ├── configs/                         # Configuration management
 │   └── model_config.py             # Model hyperparameters
 │
-├── models/                          # Pre-trained models (binary joblib format)
+├── models/                          # Trained model pipelines (joblib)
 │   ├── logistic_regression.joblib
 │   ├── decision_tree.joblib
-│   └── mlp.joblib
+│   ├── mlp.joblib
+│   ├── random_forest.joblib         # Milestone 2 addition
+│   └── gradient_boosting.joblib     # Milestone 2 addition
 │
 ├── src/                             # Source code modules
 │   ├── api/                         # API endpoints
-│   │   └── model_serving.py        # REST API for inference
-│   ├── data/                        # Dataset management
+│   │   └── model_serving.py
+│   ├── data/                        # Dataset & knowledge base
 │   │   ├── customer_churn_datasest.csv
-│   │   └── sample_test.csv
-│   ├── evaluation/                  # Model evaluation
-│   │   └── train.py                # Training & hyperparameter tuning
-│   ├── features/                    # Feature engineering
-│   ├── preprocessing/               # Data preprocessing pipeline
-│   │   └── preprocess.py           # Data transformation
-│   └── __init__.py
+│   │   ├── sample_test.csv
+│   │   └── knowledge_base/
+│   │       └── telecom_retention_policies.md
+│   ├── evaluation/                  # Training pipeline
+│   │   └── train.py                # Authoritative training script (SMOTE + RandomizedSearchCV)
+│   ├── preprocessing/               # Data preprocessing & feature engineering
+│   │   └── preprocess.py           # Cleaning, FE, ColumnTransformer
+│   └── retention/                   # Milestone 2: RAG + LangGraph engine
+│       ├── graph_engine.py          # LangGraph agentic workflow
+│       └── vector_store.py          # FAISS vector store (Gemini embeddings)
 │
-├── ui/                              # User interface modules
-│   ├── metrics.py                  # Metrics visualization
-│   ├── single_prediction.py         # Single inference interface
-│   └── batch_prediction.py          # Batch processing interface
+├── ui/                              # Streamlit UI modules
+│   ├── metrics.py                  # Model metrics & confusion matrices
+│   ├── single_prediction.py         # Single inference + AI retention strategy
+│   └── batch_prediction.py          # Bulk CSV inference & download
 │
 ├── notebooks/                       # Jupyter notebooks
 │   ├── eda.ipynb                   # Exploratory data analysis
-│   ├── model_experiment.ipynb       # Model development & tuning
+│   ├── model_experiment.ipynb       # Model training (uses src/ modules)
 │   └── results_analysis.ipynb       # Results evaluation & insights
 │
-└── reports/                         # Generated reports & visualizations
+└── reports/                         # Generated reports & documentation
 ```
 
 ### Data Pipeline Architecture
@@ -188,54 +195,64 @@ Raw Data (CSV)
 
 ### Implemented Algorithms
 
-| Algorithm | Status | CV Score | Production |
-|-----------|--------|----------|------------|
-| Logistic Regression | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
-| Decision Tree Classifier | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
-| Multi-Layer Perceptron | [![Status: Complete](https://img.shields.io/badge/Status-Complete-success?style=flat)]() | 5-Fold CV | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| Algorithm | Type | CV ROC-AUC | Status |
+|-----------|------|------------|--------|
+| Logistic Regression | Linear | 84.73% | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| Decision Tree | Tree | 81.60% | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| Multi-Layer Perceptron | Neural Net | 79.61% | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| **Random Forest** | Ensemble | 84.47% | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
+| **Gradient Boosting** | Ensemble | 84.59% | [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=flat)]() |
 
 ### Training Methodology
 
+**Imbalance Handling:**
+- `class_weight='balanced'` on all applicable models (LR, DT, RF)
+- **SMOTE** (Synthetic Minority Oversampling) inside `imblearn.Pipeline` — applied only to training folds during CV, never to test data
+
 **Hyperparameter Optimization:**
-- Cross-validation strategy: 5-fold stratified splits
-- Scoring metric: F1-score (balanced precision-recall)
-- Parameter grid search for each model type
+- `RandomizedSearchCV` with 5-fold stratified cross-validation
+- Scoring metric: **ROC-AUC** (superior to F1 for imbalanced binary classification)
+- Wider search grids with `n_iter=10–15` random trials per model
 
-**Logistic Regression Parameters:**
-- Inverse regularization strength (C): [0.1, 1.0, 10.0]
-- Solver: [lbfgs, liblinear]
+**Feature Engineering** (5 derived features added in `preprocess.py`):
+- `avg_monthly_charge` = TotalCharges / (tenure + 1)
+- `service_count` = number of active add-on services
+- `charges_per_service` = MonthlyCharges / (service_count + 1)
+- `is_new_customer` = 1 if tenure ≤ 12 months
+- `is_long_term` = 1 if tenure ≥ 48 months
 
-**Decision Tree Parameters:**
-- Maximum depth: [3, 5, 10, None]
-- Minimum samples per leaf: [1, 5, 10]
+### Performance Metrics (test set, threshold = 0.50)
 
-**Neural Network Parameters:**
-- Hidden layer sizes: [(50,), (100,)]
-- L2 regularization (alpha): [0.0001, 0.001]
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|-------|----------|-----------|--------|----|----------|
+| Logistic Regression | 74.24% | 50.95% | **78.88%** | **61.91%** | **84.37%** |
+| Decision Tree | 75.30% | 52.61% | 70.05% | 60.09% | 80.35% |
+| MLP (Neural Net) | 73.46% | 50.00% | 65.78% | 56.81% | 79.39% |
+| **Random Forest** | 76.65% | 54.56% | 71.93% | **62.05%** | 83.88% |
+| **Gradient Boosting** | **76.72%** | **54.94%** | 68.45% | 60.95% | 84.18% |
 
-### Performance Metrics
+> Recall on the Churn class improved by **+13–23 percentage points** after adding SMOTE and `class_weight='balanced'`.
+> The drop in raw accuracy vs. the old baseline is expected and correct — see the [Precision-Recall tradeoff explanation](#) in the technical report.
 
-| Model | Accuracy | Precision | Recall | F1-Score | Status |
-|-------|----------|-----------|--------|----------|--------|
-| Logistic Regression | ![Accuracy](https://img.shields.io/badge/Accuracy-81.97%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-68.42%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-59.25%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-63.51%25-informational?style=flat) | [![Best](https://img.shields.io/badge/Ranking-1st-gold?style=flat)]() |
-| Decision Tree | ![Accuracy](https://img.shields.io/badge/Accuracy-79.99%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-61.88%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-63.54%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-62.70%25-informational?style=flat) | [![Competitive](https://img.shields.io/badge/Ranking-2nd-silver?style=flat)]() |
-| MLP (Neural Network) | ![Accuracy](https://img.shields.io/badge/Accuracy-78.57%25-brightgreen?style=flat) | ![Precision](https://img.shields.io/badge/Precision-61.41%25-blue?style=flat) | ![Recall](https://img.shields.io/badge/Recall-51.21%25-orange?style=flat) | ![F1](https://img.shields.io/badge/F1--Score-55.85%25-informational?style=flat) | [![Competitive](https://img.shields.io/badge/Ranking-3rd-inactive?style=flat)]() |
-
-**Evaluation Set:** Held-out test set (20% of 7,043 samples = 1,409 customers)
+**Evaluation Set:** Held-out test set (20% of 7,043 samples = 1,409 customers, stratified)
 
 ---
 
 ## Technology Stack
 
 ### Core Dependencies
-| Component | Package | Version | Status |
-|-----------|---------|---------|--------|
-| Web Framework | Streamlit | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
-| ML Library | scikit-learn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
-| Data Processing | Pandas | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
-| Numerical Computing | NumPy | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
-| Visualization | Matplotlib, Seaborn | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
-| Serialization | Joblib | Latest | [![Verified](https://img.shields.io/badge/Verified-Stable-success?style=flat)]() |
+| Component | Package | Purpose |
+|-----------|---------|--------|
+| Web Framework | Streamlit | Interactive dashboard |
+| ML Library | scikit-learn | Model training, pipelines, evaluation |
+| Imbalance Handling | imbalanced-learn | SMOTE oversampling |
+| Data Processing | Pandas / NumPy | Feature engineering, data wrangling |
+| Serialization | Joblib | Model persistence |
+| LLM Framework | LangChain + LangGraph | Agentic RAG workflow |
+| LLM / Embeddings | langchain-google-genai | Gemini 2.5 Flash + Gemini Embedding-001 |
+| Vector Store | FAISS (faiss-cpu) | Similarity search for RAG retrieval |
+| Visualization | Matplotlib, Seaborn | EDA and metrics charts |
+| Secrets | python-dotenv | Local API key management |
 
 ### Development Tools
 - [![Git](https://img.shields.io/badge/Git-Version%20Control-orange?style=flat&logo=git)](https://git-scm.com/) Version control
@@ -372,16 +389,17 @@ This project is licensed under the MIT License. See LICENSE file for details.
 
 | Version | Date | Status | Changes |
 |---------|------|--------|---------|
-| 1.0.0 | 2026-04-13 | [![Release](https://img.shields.io/badge/Status-Stable-success?style=flat)]() | Initial release with classical ML models |
+| 2.0.0 | 2026-04-19 | [![Release](https://img.shields.io/badge/Status-Final-success?style=flat)]() | Milestone 2 complete: SMOTE, feature engineering, RF + GB ensembles, LangGraph RAG retention engine |
+| 1.0.0 | 2026-04-13 | [![Release](https://img.shields.io/badge/Status-Stable-success?style=flat)]() | Milestone 1: classical ML models (LR, DT, MLP), Streamlit dashboard |
 | 0.9.0 | 2026-04-10 | [![Release](https://img.shields.io/badge/Status-Beta-orange?style=flat)]() | Beta release for testing |
 
 ---
 
 ## Project Information
 
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--13-informational.svg)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--19-informational.svg)]()
 [![Maintainer](https://img.shields.io/badge/Maintainer-Project%20Team-blue.svg)]()
-[![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen.svg)]()
+[![Status](https://img.shields.io/badge/Status-Final%20Release-success.svg)]()
 
 **Repository:** [github.com/makeprodigy/customer-churn-prediction](https://github.com/makeprodigy/customer-churn-prediction)  
 **Issues:** [Report Issues](https://github.com/makeprodigy/customer-churn-prediction/issues)  
