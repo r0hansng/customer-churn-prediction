@@ -3,6 +3,12 @@ import pandas as pd
 import io
 
 try:
+    from src.retention.graph_engine import run_batch_retention_engine
+    batch_engine_available = True
+except ImportError:
+    batch_engine_available = False
+
+try:
     from src.preprocessing.preprocess import _engineer_features
 except ImportError:
     _SERVICE_COLS = [
@@ -97,6 +103,60 @@ def show_batch_prediction(models):
                     file_name="predictions.csv",
                     mime="text/csv"
                 )
+
+                # ── Collective Retention Strategy ─────────────────────────
+                if n_churn > 0 and batch_engine_available:
+                    st.markdown("---")
+                    st.markdown("### 🧠 Collective Retention Strategy")
+                    st.info(
+                        f"**{n_churn} customers** are predicted to churn. "
+                        "Instead of individual strategies, we can analyse their shared "
+                        "characteristics and generate **one cost-effective retention programme** "
+                        "for the entire at-risk segment — a single Gemini API call."
+                    )
+
+                    # Build at-risk subset (raw features, no engineered cols)
+                    at_risk_mask = predictions == 1
+                    at_risk_raw  = predict_df[at_risk_mask].copy()
+                    at_risk_prob = probas[at_risk_mask].tolist()
+
+                    if st.button("✨ Generate Collective Retention Strategy (AI)", key="batch_retention"):
+                        with st.spinner(
+                            f"Analysing {n_churn} at-risk customers and generating "
+                            "segment-level strategy via LangGraph + RAG..."
+                        ):
+                            try:
+                                strategy, seg_profile = run_batch_retention_engine(
+                                    at_risk_raw, at_risk_prob
+                                )
+                                st.session_state["batch_strategy"]     = strategy
+                                st.session_state["batch_seg_profile"]  = seg_profile
+                            except Exception as ex:
+                                st.error(f"Strategy generation failed: {ex}")
+
+                elif n_churn > 0 and not batch_engine_available:
+                    st.warning("Retention engine not available — check GOOGLE_API_KEY in Streamlit Secrets.")
+
+                # Render strategy if generated
+                if "batch_strategy" in st.session_state:
+                    seg = st.session_state.get("batch_seg_profile", {})
+
+                    # Segment snapshot cards
+                    st.markdown("#### 📊 At-Risk Segment Snapshot")
+                    k1, k2, k3, k4, k5 = st.columns(5)
+                    k1.metric("At-Risk Customers",   seg.get("total_at_risk_customers", "—"))
+                    k2.metric("Avg Churn Prob",       seg.get("avg_churn_probability",  "—"))
+                    k3.metric("Avg Tenure",           f"{seg.get('avg_tenure_months','—')} mo")
+                    k4.metric("Avg Monthly Bill",     seg.get("avg_monthly_charges",    "—"))
+                    k5.metric("Avg Active Services",  seg.get("avg_active_services",    "—"))
+
+                    col_a, col_b, col_c = st.columns(3)
+                    col_a.metric("Dominant Contract",  seg.get("most_common_contract",        "—"))
+                    col_b.metric("Dominant Internet",  seg.get("most_common_internet_service", "—"))
+                    col_c.metric("Dominant Payment",   seg.get("most_common_payment_method",   "—"))
+
+                    st.markdown("#### 📝 Recommended Retention Programme")
+                    st.markdown(st.session_state["batch_strategy"])
 
         except Exception as e:
             st.error(f"Error processing file: {e}")
