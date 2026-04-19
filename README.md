@@ -25,7 +25,7 @@
 ### Deployment & Documentation
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://customer-churn-prediction-m2-sem4.streamlit.app/)
-[![View Technical Report](https://img.shields.io/badge/Technical%20Report-Overleaf-00A3E0?style=flat)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+[![View Technical Report](https://img.shields.io/badge/Technical%20Report-Overleaf-00A3E0?style=flat)](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb)
 [![Demo Video](https://img.shields.io/badge/Demo-Google%20Drive-4285F4?style=flat&logo=googledrive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
 ---
@@ -46,7 +46,7 @@ This system delivers predictive analytics for customer churn identification thro
 
 | Document | Link |
 |----------|------|
-| Technical Report | [Milestone 1 Report (Overleaf)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb) |
+| Technical Report | [Milestone 1 Report (Overleaf)](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb) |
 | Demo Walkthrough | [Video Demonstration (Google Drive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing) |
 | System Architecture | See section below |
 
@@ -375,11 +375,11 @@ CMD ["streamlit", "run", "app.py"]
 ## Support & Resources
 
 [![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-red?style=flat&logo=github)](https://github.com/makeprodigy/customer-churn-prediction/issues)
-[![Documentation](https://img.shields.io/badge/Documentation-Complete-blue?style=flat)](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+[![Documentation](https://img.shields.io/badge/Documentation-Complete-blue?style=flat)](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb)
 [![Demo Available](https://img.shields.io/badge/Demo-Available-brightgreen?style=flat)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
 - **Issues & Bug Reports:** [GitHub Issues](https://github.com/makeprodigy/customer-churn-prediction/issues)
-- **Technical Documentation:** [Technical Report](https://www.overleaf.com/read/kdrjyhtsnxhs#4b6dcb)
+- **Technical Documentation:** [Technical Report](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb)
 - **Video Demonstration:** [Demo Walkthrough](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing)
 
 ---
