@@ -7,7 +7,8 @@ Customer Churn Prediction & Retention Strategy project.
 
 The full technical report covering both milestones is available as:
 
-- **`report.tex`** (project root) — LaTeX source for the Final Technical Report
+- **`report_tex.tex`** (project root) — LaTeX source for the Final Technical Report
+- **`report_pdf.pdf`** (project root) — Compiled Final Technical Report
 - **Overleaf link:** https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb
 
 ## Report Contents
