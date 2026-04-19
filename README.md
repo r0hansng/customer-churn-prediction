@@ -92,6 +92,7 @@ The application will be accessible at `http://localhost:8501`
 
 ## System Architecture
 
+![System Architecture](system_architecture_diagram.png)
 ### Directory Structure
 ```
 customer-churn-prediction/
