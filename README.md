@@ -351,18 +351,6 @@ git push              # Deploy to Streamlit Cloud
 [![Deployment Platform](https://img.shields.io/badge/Deployment-Streamlit%20Cloud-FF1493?style=flat&logo=streamlit)](https://streamlit.io/)
 [![Status](https://img.shields.io/badge/Environment-Production-success?style=flat)]()
 
-### Docker Deployment
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-CMD ["streamlit", "run", "app.py"]
-```
-
-[![Docker Support](https://img.shields.io/badge/Docker-Supported-blue?style=flat&logo=docker)](https://www.docker.com/)
-[![Image Size](https://img.shields.io/badge/Image%20Size-%3C500MB-informational?style=flat)]()
-
 ### Performance Specifications
 | Metric | Target | Status |
 |--------|--------|--------|
