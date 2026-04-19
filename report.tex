@@ -7,6 +7,7 @@
 \usepackage{array}
 \usepackage{longtable}
 \usepackage{hyperref}
+\usepackage{bookmark}
 \usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{enumitem}
@@ -56,7 +57,7 @@
 \rhead{\small\color{gray} Customer Churn Prediction}
 \lhead{\small\color{gray} Technical Report --- Final Report}
 \rfoot{\small\thepage}
-\lfoot{\small\color{gray} Gen AI Assignment}
+\lfoot{\small\color{gray} Gen AI Final Project}
 \renewcommand{\headrulewidth}{0.4pt}
 
 % ── Code listing style ────────────────────────────────────────────────────────
@@ -111,7 +112,7 @@
     \begin{tabular}{rl}
         \textbf{Authors}     & Pushpendra S. Parihar, Rohan Singh \& Saksham Sharma \\[4pt]
         \textbf{GitHub}      & \href{https://github.com/makeprodigy/customer-churn-prediction}{makeprodigy/customer-churn-prediction} \\[4pt]
-        \textbf{Course}      & Generative AI --- Mid-Semester Project (Project 5) \\[4pt]
+        \textbf{Course}      & Generative AI --- Final Project (Milestones 1 \& 2) \\[4pt]
         \textbf{Submitted}   & 19 April 2026 \\[4pt]
         \textbf{Tech Stack}  & Python 3 $\cdot$ Scikit-Learn $\cdot$ LangGraph $\cdot$ LangChain $\cdot$ Gemini 2.5 Flash $\cdot$ Streamlit \\
     \end{tabular}
@@ -551,7 +552,7 @@ best_pipeline = search.best_estimator_
 
 \subsection{Contributor Overview}
 
-This project was developed collaboratively by three contributors. Git commit responsibilities are split in a \textbf{4:4:2 ratio} (Pushpendra~40\%, Rohan~40\%, Saksham~20\%), with additional non-code deliverables assigned as described below.
+This project was developed collaboratively by three contributors. Git commit responsibilities are split in a \textbf{5:3:2 ratio} (Pushpendra~50\%, Rohan~30\%, Saksham~20\%), with additional deliverables assigned as described below.
 
 \begin{table}[H]
 \centering
@@ -561,14 +562,14 @@ This project was developed collaboratively by three contributors. Git commit res
     \textbf{Contributor} & \textbf{GitHub Handle} & \textbf{Git Share} & \textbf{Key Responsibilities} \\
     \midrule
     Pushpendra S. Parihar & \texttt{makeprodigy}
-        & 40\%
-        & ML pipeline, Streamlit app, hyperparameter optimisation, cloud deployment, \textbf{technical report (co-author)} \\
+        & 50\%
+        & ML pipeline, Agentic AI Retention Engine (LangGraph + RAG), Streamlit app, Model Training, Hyperparameter Opt., Cloud Deployment, Technical Report Review \\
     Rohan Singh & \texttt{r0hansng}
-        & 40\%
-        & Data sourcing, EDA, model evaluation analysis, \textbf{project demo video} \\
+        & 30\%
+        & \textbf{Project demo video}, Data Sourcing, EDA, User Testing, Streamlit App collaboration \\
     Saksham Sharma & \texttt{Saksham-9898}
         & 20\%
-        & Model evaluation review, testing, documentation feedback, \textbf{technical report (co-author)} \\
+        & \textbf{Technical Report (Lead Author)}, Documentation, Testing \& Validation \\
     \bottomrule
 \end{tabular}
 \end{table}
@@ -594,12 +595,16 @@ This project was developed collaboratively by three contributors. Git commit res
         & Authored \texttt{train.py}: LR, DT, MLP, RF, GB with RandomizedSearchCV
         & Reviewed model configs, analysed metrics
         & Validated evaluation loop outputs \\
+    Agentic AI Engine (RAG)
+        & Architected LangGraph \& RAG workflows for single/batch retention
+        & Testing \& feedback
+        & Analysed retention metrics \\
     Streamlit Application
         & Built full dashboard (\texttt{app.py}): single \& batch modes, charts, session state
-        & User testing \& feedback across UI iterations
+        & User testing \& feedback across UI iterations, assisted in integration
         & Functional testing \& edge-case validation \\
     Cloud Deployment
-        & Deployed to Streamlit Cloud; committed \texttt{.joblib} artefacts
+        & Deployed to Streamlit Cloud; handled Secrets management
         & Verified live URL \& behaviour
         & — \\
     Hyperparameter Opt.
@@ -607,21 +612,20 @@ This project was developed collaboratively by three contributors. Git commit res
         & Compared before/after metrics
         & Documented tuning results \\
     Documentation (README)
-        & Wrote \& iterated README (3 commits)
+        & Structured core README documentation
         & Reviewed content
         & Provided feedback \& proofreading \\
     \textbf{Project Demo Video}
-        & —
+        & Video script coordination
         & \textbf{Produced, recorded \& edited full demo video}
         & — \\
     \textbf{Technical Report}
-        & \textbf{LaTeX authoring \& structure}
+        & \textbf{Content review \& technical validation}
         & —
-        & \textbf{Content review, EDA write-up \& proofreading} \\
+        & \textbf{LaTeX authoring, structure, and comprehensive write-up} \\
     \bottomrule
 \end{tabularx}
 \end{table}
-
 
 \subsection{Effort Distribution Summary}
 
@@ -629,14 +633,14 @@ The demo video is available at: \href{https://drive.google.com/file/d/1u08SJbGc9
 
 \begin{table}[H]
 \centering
-\caption{Overall Contribution Split (4:4:2 Ratio)}
+\caption{Overall Contribution Split (5:3:2 Ratio)}
 \begin{tabular}{llrp{6cm}}
     \toprule
     \textbf{Contributor} & \textbf{Git Share} & \textbf{\%} & \textbf{Extra Deliverables} \\
     \midrule
-    Pushpendra S. Parihar & Phases 1--7 (lead) & 40\% & Technical report (LaTeX) --- co-author \\
-    Rohan Singh           & Phases 2--7 (EDA, testing) & 40\% & Project demo video (\href{https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing}{link}) \\
-    Saksham Sharma        & Phases 1, 6--7 (review) & 20\% & Technical report (LaTeX) --- co-author \\
+    Pushpendra S. Parihar & Complete Lifecycle (Lead Developer) & 50\% & Core Architecture \& AI Implementations \\
+    Rohan Singh           & EDA, Testing, UI Assistance & 30\% & Project demo video (\href{https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing}{link}) \\
+    Saksham Sharma        & Testing, Documentation & 20\% & Technical report (LaTeX lead author) \\
     \midrule
     \textbf{Total} & & \textbf{100\%} & \\
     \bottomrule
