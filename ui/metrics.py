@@ -37,7 +37,7 @@ def show_metrics():
     st.table(pd.DataFrame(hp_data).set_index("Model"))
 
     # Test-set metrics at threshold 0.50
-    st.markdown("### 📈 Test Set Performance (decision threshold = 0.35)")
+    st.markdown("### 📈 Test Set Performance (decision threshold = 0.50)")
     metrics_data = {
         "Model": [
             "Logistic Regression", "Decision Tree", "MLP (Neural Net)",

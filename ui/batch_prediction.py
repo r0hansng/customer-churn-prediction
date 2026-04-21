@@ -72,8 +72,8 @@ def show_batch_prediction(models):
                 # Apply feature engineering BEFORE inference
                 predict_df_engineered = _engineer_features(predict_df)
 
-                predictions = model.predict(predict_df_engineered)
                 probas      = model.predict_proba(predict_df_engineered)[:, 1]
+                predictions = (probas >= 0.35).astype(int)
 
                 # Persist results in session_state so retention button can access them
                 st.session_state["batch_predictions"] = predictions

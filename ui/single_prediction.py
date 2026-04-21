@@ -110,8 +110,8 @@ def show_single_prediction(models):
         all_results = {}
         for model_name, model in models.items():
             try:
-                prediction = model.predict(input_data_engineered)[0]
                 proba = model.predict_proba(input_data_engineered)[0]
+                prediction = 1 if proba[1] >= 0.35 else 0
                 all_results[model_name] = {
                     "prediction": prediction,
                     "churn_prob": proba[1] * 100
@@ -152,7 +152,7 @@ def show_single_prediction(models):
             default=0
         )
                 
-        if max_churn_prob > 0.5:
+        if max_churn_prob >= 0.35:
             st.session_state['high_risk_customer'] = True
             st.session_state['last_input_data'] = input_data
             st.session_state['last_churn_prob'] = max_churn_prob
