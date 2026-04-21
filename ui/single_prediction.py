@@ -146,16 +146,11 @@ def show_single_prediction(models):
                         st.metric("Churn Probability",     f"{result['churn_prob']:.1f}%")
                         st.metric("Retention Probability", f"{100 - result['churn_prob']:.1f}%")
 
-        # Determine if overall risk is high (for RAG engine trigger)
-        max_churn_prob = max(
-            (r["churn_prob"] / 100 for r in all_results.values() if "churn_prob" in r),
-            default=0
-        )
-                
-        if max_churn_prob >= 0.35:
+        # Determine if overall risk is high based on Ensemble Verdict (majority votes)
+        if votes_churn > total_models / 2:
             st.session_state['high_risk_customer'] = True
             st.session_state['last_input_data'] = input_data
-            st.session_state['last_churn_prob'] = max_churn_prob
+            st.session_state['last_churn_prob'] = avg_prob / 100
         else:
             st.session_state['high_risk_customer'] = False
             if 'retention_strategy' in st.session_state:
