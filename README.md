@@ -46,7 +46,7 @@ This system delivers predictive analytics for customer churn identification thro
 
 | Document | Link |
 |----------|------|
-| Technical Report | [Milestone 1 Report (Overleaf)](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb) |
+| Technical Report | [Milestone 2 Report (Overleaf)](https://www.overleaf.com/read/xnyxtzmjfzjy#67cbfb) |
 | Demo Walkthrough | [Video Demonstration (Google Drive)](https://drive.google.com/file/d/1u08SJbGc92HiiyLoe42iHyELQlHl03aQ/view?usp=sharing) |
 | System Architecture | See section below |
 
