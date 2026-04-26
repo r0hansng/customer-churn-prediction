@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def show_metrics():
     """Display model evaluation metrics and visualizations."""
@@ -88,11 +90,22 @@ def show_metrics():
     def render_cm(title, data):
         with st.container(border=True):
             st.markdown(f"**{title}**")
-            st.dataframe(pd.DataFrame(
-                data,
-                index=["Actual: No", "Actual: Yes"],
-                columns=["Pred: No", "Pred: Yes"],
-            ), use_container_width=True)
+            
+            fig, ax = plt.subplots(figsize=(4, 3))
+            fig.patch.set_facecolor('#0D1117')
+            ax.set_facecolor('#0D1117')
+            
+            sns.heatmap(data, annot=True, fmt="d", cmap=sns.dark_palette("#00E5FF", as_cmap=True), cbar=False,
+                        xticklabels=["Pred: No", "Pred: Yes"],
+                        yticklabels=["Actual: No", "Actual: Yes"],
+                        ax=ax,
+                        annot_kws={"color": "#E6EDF3"})
+            
+            ax.tick_params(colors='#E6EDF3')
+            for spine in ax.spines.values():
+                spine.set_edgecolor('#161B22')
+            
+            st.pyplot(fig)
 
     with col1:
         render_cm("Logistic Regression", [[751, 284], [79, 295]])
